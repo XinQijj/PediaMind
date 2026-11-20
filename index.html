@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PediaMind：让真实儿科问诊数据提升 AI 预问诊能力</title>
 <meta name="description" content="用公开的真实儿科问诊数据集 IMCS-21 构建相似问诊知识库、Harness 与本地问诊模型，并用模拟家长量化问诊能力。">
-<link rel="stylesheet" href="assets/style.css?v=20261119b">
+<link rel="stylesheet" href="assets/style.css?v=20261120c">
 </head>
 <body>
 
 <header class="hero">
   <p class="kicker">课程项目 · 儿科基座大模型与多智能体协同诊疗</p>
   <h1>PediaMind：让真实儿科问诊数据<br>提升 AI 预问诊能力</h1>
-  <p class="sub">相似问诊知识库 + Harness + 本地问诊模型，用 IMCS-21 测试集做的"模拟家长"量化问诊能力</p>
+  <p class="sub">数据驱动的追问 → 诊断 → 及时就医建议：相似问诊知识库 + Harness + 本地问诊模型 + 诊断模型，用 IMCS-21 测试集量化</p>
   <p class="team"><b>王鑫琦</b>　<b>唐瑞泽</b>　·　指导教师 <b>冯瑞</b>　<b>穆欣雅</b><br>复旦大学 智能机器人与先进制造创新学院</p>
   <div class="btns">
     <a href="#video">▶ 演示视频</a><a href="#method">方法</a><a href="#replay">模拟家长回放</a><a href="#results">结果</a><a href="#screens">网站截图</a>
@@ -20,7 +20,7 @@
 </header>
 
 <nav class="toc"><div class="in">
-  <a href="#video">演示</a><a href="#problem">问题</a><a href="#method">方法</a><a href="#replay">回放</a><a href="#results">问诊能力结果</a>
+  <a href="#video">演示</a><a href="#problem">问题</a><a href="#method">方法</a><a href="#replay">回放</a><a href="#results">问诊能力结果</a><a href="#diagnosis">诊断</a>
   <a href="#record">病历模型</a><a href="#understand">先听懂再问</a><a href="#screens">截图</a><a href="#safety">安全设计</a><a href="#limits">局限</a><a href="#refs">参考文献</a>
 </div></nav>
 
@@ -31,7 +31,7 @@
     <video controls preload="metadata" playsinline poster="assets/video/inquiry-clip-poster.jpg">
       <source src="assets/video/inquiry-clip.mp4" type="video/mp4">
     </video>
-    <div class="cap">演示（1 分 47 秒）：在运行中的网站上做一次预问诊。A1 先问危险信号，再问由 IMCS-21 相似问诊知识库给出、本地问诊模型挑选的追问；每答一题都重新计算。演示账号里的孩子是虚构的；等待模型的片段已加速。</div>
+    <div class="cap">演示（1 分 42 秒）：在运行中的网站上做一次预问诊。A1 先问危险信号，再问由 IMCS-21 相似问诊知识库给出、本地问诊模型挑选的追问（每答一题都重新计算）；问完先给问诊小结和诊断（主要诊断、诊断依据、鉴别诊断、建议检查），最后才是就医建议。演示账号里的孩子是虚构的；等待模型的片段已加速。</div>
   </div>
 </section>
 
@@ -46,9 +46,9 @@
     <div class="tile"><div class="label">4B 小模型，用医生提问微调</div>
       <div class="value"><span class="from">14.6%</span><span class="arrow">→</span>59.5%</div>
       <div class="delta">+44.9</div><div class="foot">原版自由提问 → 2,488 句医生提问微调 19 分钟</div></div>
-    <div class="tile"><div class="label">病历：症状识别 F1</div>
-      <div class="value"><span class="from">57.9</span><span class="arrow">→</span>68.7</div>
-      <div class="delta">+10.8</div><div class="foot">云端 Kimi → 本地微调模型，200 段</div></div>
+    <div class="tile"><div class="label">诊断：主要诊断与医生一致</div>
+      <div class="value"><span class="from">13.4%</span><span class="arrow">→</span>58.7%</div>
+      <div class="delta">医生的诊断在列出的诊断里 89.4%</div><div class="foot">总是猜最常见的病 → 网站的诊断写法（问 5 个后），811 段</div></div>
   </div>
   <p class="note">所有数字都在 IMCS-21 <b>测试集</b>上计算，测试集从没参与训练、统计或调参（调参只用验证集）。"问出的症状"指真实医生靠追问才知道的症状被问到的比例。</p>
 </section>
@@ -143,10 +143,11 @@
       <text x="785" y="278" text-anchor="middle" class="b">按卫健委指南</text>
       <text x="785" y="298" text-anchor="middle" class="b">重新分诊、可叫停</text>
       <rect x="870" y="198" width="120" height="128" rx="12" class="bx"/>
-      <text x="930" y="234" text-anchor="middle" class="h">结果</text>
-      <text x="930" y="258" text-anchor="middle" class="b">分诊 + 科室</text>
-      <text x="930" y="278" text-anchor="middle" class="b">病历草稿</text>
-      <text x="930" y="298" text-anchor="middle" class="b">本地模型草稿</text>
+      <text x="930" y="230" text-anchor="middle" class="h">结果</text>
+      <text x="930" y="254" text-anchor="middle" class="b">① 问诊小结</text>
+      <text x="930" y="274" text-anchor="middle" class="b">② 诊断</text>
+      <text x="930" y="294" text-anchor="middle" class="b">③ 病历草稿</text>
+      <text x="930" y="314" text-anchor="middle" class="b">④ 最后：就医建议</text>
       <path d="M160,262 H179" class="ln" marker-end="url(#ar)"/>
       <path d="M345,262 H364" class="ln" marker-end="url(#ar)"/>
       <path d="M700,262 H719" class="ln" marker-end="url(#ar)"/>
@@ -226,18 +227,47 @@
   </div>
 </section>
 
+<section id="diagnosis">
+  <h2 class="sec"><span class="n">05</span>诊断：问完先给诊断，最后才说就医</h2>
+  <p class="lead">老师的初衷是做能替代医生问诊的"问诊模型"，而不只是辅助工具。追问结束后，结果页依次给出：问诊小结 → 诊断（按医生的写法）→ 给医生看的病历草稿（末尾写上诊断）→ 最后是及时就医建议。</p>
+  <div class="grid2">
+    <div class="card"><h3 style="margin-top:0">诊断按医生的写法给出</h3><ul class="tight">
+      <li><b>主要诊断</b>，必须有孩子身上的典型表现支持（发热、咳嗽、流涕、鼻塞写"急性上呼吸道感染"，而不只是"发热待查"）；另一个系统的问题（如发热的孩子同时便秘）列为<b>其他诊断</b>；</li>
+      <li><b>诊断依据</b>：症状、病程和体温，哪些是典型表现，哪些阴性表现；</li>
+      <li><b>鉴别诊断</b>：每个写明为什么暂不考虑、出现什么要重新考虑、靠什么检查鉴别；</li>
+      <li><b>建议检查</b>：从训练集医生病历统计（例如新生儿黄疸 69% 提到测胆红素），并写明查它是为了什么；</li>
+      <li><b>病情评估</b>，以及本地儿科大模型独立读整段问诊后的<b>复核</b>。</li></ul></div>
+    <div class="card"><h3 style="margin-top:0">诊断模型</h3>
+      <p>多分类逻辑回归，输入是已知的症状状态和家长原话里的字词，只用训练集 2,472 段问诊训练（按"信息不全"的程度做成 14,832 条），正则强度在验证集上选。1 MB，网站在 CPU 上直接计算。主要诊断 / 其他诊断 / 鉴别诊断的写法规则也在验证集上选定。</p>
+      <p class="small muted">网站页面上不显示数据集名称和概率；出现危险信号时不给诊断，直接让家长立即就医；情况超出 10 种常见病时明确说需要医生当面诊断；不给用药建议。</p></div>
+  </div>
+  <div class="chart" data-chart="dxbars" style="margin-top:16px">
+    <h4>诊断模型的准确率（10 类，测试集 811 段，从未参与训练）</h4>
+    <p class="csub">"前 3 个里有"指医生的诊断在模型排出的前 3 种里。总是猜最常见的病只有 13.4%。</p>
+  </div>
+  <div class="chart" data-chart="dxclinical" style="margin-top:16px">
+    <h4>网站上的诊断写法：主要诊断 + 其他诊断 + 鉴别诊断</h4>
+    <p class="csub">"一致"按临床名称计算（上呼吸道感染和感冒算同一个）。高亮行：知识库每答一题重算、问 5 个后（与网站相同的追问方式，811 段）。</p>
+  </div>
+  <ul class="tight" style="margin-top:12px">
+    <li><b>数据让诊断从"瞎猜"变成有据可查</b>：主要诊断与医生一致约 59%，医生的诊断在列出的 2–3 个诊断里约 89%；总是猜最常见的病只有 13.4%。</li>
+    <li><b>主要诊断的上限在 61% 左右</b>：10 种诊断本身有重叠（"小儿发热""小儿咳嗽""上呼吸道感染"常难分开），连两位医生写的诊断与数据集标签也只有 <span data-dx="doctor">83.5</span>% 一致。所以网站在主要诊断之外写出鉴别诊断和需要做的检查，就诊的医生可以直接核对。</li>
+    <li><b>本地病历模型在网站设定下</b>（只读家长原话和 5 个追问）第 1 个就对 <span data-dx="local">42.0</span>%，同样 200 段上诊断模型是 48.5%，所以用它做复核：它的诊断与主要诊断不同时，补为鉴别诊断。给它完整的医生对话时是 63.4%，但对话里往往有医生自己说的诊断，不能代表预问诊能力。</li>
+  </ul>
+</section>
+
 <section id="record">
-  <h2 class="sec"><span class="n">05</span>第一阶段：本地病历模型</h2>
+  <h2 class="sec"><span class="n">06</span>第一阶段：本地病历模型</h2>
   <p class="lead">问诊结束后，本地模型读完整的问答，识别症状并写一份病历草稿。用 IMCS-21 官方的症状识别（SR）和病历生成（MRG）指标，在同一批 200 段测试对话上比较。</p>
   <div class="chart" data-chart="record">
     <h4>病历模型：症状识别与病历生成</h4>
     <p class="csub">分数越高越好。参照：两位医生互相比较，病历得分只有 53.0；官方基线为症状识别 67.49、病历 54.26。</p>
   </div>
-  <p class="small muted" style="margin-top:8px">在全部 811 段上，微调模型的症状识别 F1 为 69.8（95% CI 68.4–71.4），病历得分 57.6（56.9–58.3）。它在本机运行、数据不出本机；批量评测时每段约 3 秒，Kimi 为 26.5 秒。网站只显示主诉、现病史、辅助检查、既往史四项，诊断和建议不显示。</p>
+  <p class="small muted" style="margin-top:8px">在全部 811 段上，微调模型的症状识别 F1 为 69.8（95% CI 68.4–71.4），病历得分 57.6（56.9–58.3）。它在本机运行、数据不出本机；批量评测时每段约 3 秒，Kimi 为 26.5 秒。它的"诊断"一项作为第二参考显示在初步诊断里；"建议"一项可能含用药，不显示。</p>
 </section>
 
 <section id="understand">
-  <h2 class="sec"><span class="n">06</span>先听懂再问：少问家长已经说过的</h2>
+  <h2 class="sec"><span class="n">07</span>先听懂再问：少问家长已经说过的</h2>
   <p class="lead">上面的评测假设 A1 完全读懂了家长开头的话。网站里靠抽取，所以在全部 811 段上单独测了这一步（每段问 5 个）。</p>
   <div class="chart" data-chart="understand">
     <h4>重复问家长已经说过的症状（次，811 段）</h4>
@@ -246,46 +276,48 @@
 </section>
 
 <section id="screens">
-  <h2 class="sec"><span class="n">07</span>网站截图</h2>
+  <h2 class="sec"><span class="n">08</span>网站截图</h2>
   <p class="lead">运行中的网站（演示账号，虚构的家庭）。点击图片放大。</p>
   <div class="gallery">
     <figure><img src="assets/img/01_intake.png" alt="勾选症状并补充家长原话" loading="lazy"><figcaption>① 家长勾选症状，再用自己的话补充</figcaption></figure>
     <figure><img src="assets/img/02_followup.png" alt="A1 数据驱动的追问" loading="lazy"><figcaption>② A1 的数据追问，括号里写明依据；右边是 A2 复核</figcaption></figure>
-    <figure><img src="assets/img/03_result.png" alt="就医建议" loading="lazy"><figcaption>③ 就医建议：门诊、小儿呼吸科，每条判断都有依据</figcaption></figure>
+    <figure><img src="assets/img/03_diagnosis.png" alt="诊断" loading="lazy"><figcaption>③ 诊断：主要诊断、诊断依据、鉴别诊断、建议检查、病情评估和本地大模型复核</figcaption></figure>
     <figure><img src="assets/img/04_draft.png" alt="病历草稿" loading="lazy"><figcaption>④ 给医生看的病历草稿，记下追问结果，每句话可追溯来源</figcaption></figure>
-    <figure><img src="assets/img/05_local_model.png" alt="本地模型草稿" loading="lazy"><figcaption>⑤ 本地儿科模型（IMCS-21 微调）的病历草稿，只写四项</figcaption></figure>
+    <figure><img src="assets/img/05_local_model.png" alt="本地模型草稿" loading="lazy"><figcaption>⑤ 本地儿科模型（IMCS-21 微调）的病历草稿</figcaption></figure>
+    <figure><img src="assets/img/06_care.png" alt="及时就医建议" loading="lazy"><figcaption>⑥ 最后：及时就医建议（门诊、小儿呼吸科），每条判断都有依据</figcaption></figure>
     <figure><video controls preload="none" playsinline poster="assets/video/full-demo-poster.jpg"><source src="assets/video/full-demo.mp4" type="video/mp4"></video>
       <figcaption>完整功能演示（4 分 22 秒，11 月 16 日录制）：每日状况、问诊、挂号、病历识别、膳食、家族图谱等。录制时追问还是旧版本。</figcaption></figure>
   </div>
 </section>
 
 <section id="safety">
-  <h2 class="sec"><span class="n">08</span>安全设计</h2>
+  <h2 class="sec"><span class="n">09</span>安全设计</h2>
   <div class="grid2">
     <div class="card"><ul class="tight">
       <li><b>规则优先分诊</b>：依据国家卫健委儿科分诊标准、WHO IMCI、NICE；模型只能补充症状，不能降低紧急程度；</li>
       <li><b>A2 一票否决</b>：每答一题重新分诊，发现危险信号立即停止追问、提示就医；</li>
       <li><b>危险信号优先</b>：数据追问里，危险信号候选一定先问，不交给模型挑。</li></ul></div>
     <div class="card"><ul class="tight">
-      <li><b>不做诊断、不给用药</b>：病历草稿和模型输出都过禁用词检查，诊断、用药句子会被删除；</li>
+      <li><b>诊断不越过分诊、不给用药</b>：诊断不会降低分诊级别，危险信号时不给诊断、只提示立即就医；病历草稿和模型输出都过禁用词检查，用药句子会被删除；</li>
       <li><b>数据不出本机</b>：两个本地模型在笔记本显卡上运行，只监听本机地址；</li>
       <li><b>显存保护</b>：所有 GPU 任务限制显存，评测另有看门狗。</li></ul></div>
   </div>
 </section>
 
 <section id="limits">
-  <h2 class="sec"><span class="n">09</span>局限</h2>
+  <h2 class="sec"><span class="n">10</span>局限</h2>
   <div class="card"><ul class="tight">
     <li>模拟家长不等于真实家长：真实问诊里没谈到的症状一律按"没有"回答，衡量的是"能不能问到医生认为值得谈的症状"，不是诊断准确率。</li>
     <li>IMCS-21 只覆盖 10 种常见病、来自在线问诊；罕见病和急症问不到也测不到，所以危险信号仍由固定题库和规则先筛查。</li>
     <li>Kimi 只跑了 50 段（控制费用，花费约 8 元），置信区间较宽；问诊模型比知识库单独高 2.8 分，但不显著。</li>
     <li>网站上要靠抽取读懂家长原话，实际效果介于"完全读懂"和"规则抽取"之间（召回约 49–55）。</li>
     <li>病历模型有时会套模板句（如没问过也写"无恶心呕吐"），辅助检查、既往史两项不如 Kimi。</li>
+    <li>诊断只覆盖 10 种常见病：主要诊断与医生一致约 59%，医生的诊断在列出的诊断里约 89%，还达不到替代医生的水平；诊断标签本身也有重叠和噪声。</li>
   </ul></div>
 </section>
 
 <section id="refs">
-  <h2 class="sec"><span class="n">10</span>数据、工具与参考文献</h2>
+  <h2 class="sec"><span class="n">11</span>数据、工具与参考文献</h2>
   <ol class="refs">
     <li>Chen W. et al. A benchmark for automatic medical consultation system: frameworks, tasks and datasets. <i>Bioinformatics</i> 39(1), btac817, 2022.（IMCS-21 数据集与官方评测）</li>
     <li>Li S. S. et al. MediQ: Question-Asking LLMs and a Benchmark for Reliable Interactive Clinical Reasoning. arXiv:2406.00922, 2024.</li>
@@ -300,10 +332,10 @@
 
 <footer>
   PediaMind · 课程项目"儿科基座大模型与多智能体协同诊疗" · 2026 年 11 月<br>
-  本页所有评测数字由 <code>scripts/build_project_page_data.py</code> 直接从评测结果文件生成。本系统只做就医前的信息整理和分诊提示，不做诊断；紧急情况请拨打 120。
+  本页所有评测数字由 <code>scripts/build_project_page_data.py</code> 直接从评测结果文件生成。网站的诊断由模型根据问诊作出，就诊时请交给医生核对；不提供用药建议；紧急情况请拨打 120。
 </footer>
 
-<script src="assets/data.js?v=20261119b"></script>
-<script src="assets/charts.js?v=20261119b"></script>
+<script src="assets/data.js?v=20261120c"></script>
+<script src="assets/charts.js?v=20261120c"></script>
 </body>
 </html>

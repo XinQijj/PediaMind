@@ -166,7 +166,40 @@
       U.map((u) => [esc(u.name), u.precision + "%", u.recall + "%", f1(u.recall5), u.repeats + " 次"]), U.findIndex((u) => u.name.includes("网站")))}</details>`);
   }
 
+  // ---------------------------------------------------------------- 4b. preliminary diagnosis accuracy
+  function dxbars(root) {
+    const R = D.diagnosis.rows, W = 760, X0 = 268, X1 = 690, RH = 46, T = 6, H = T + R.length * RH + 30, bh = 11;
+    const xs = (v) => X0 + (X1 - X0) * v / 100;
+    const s = svg("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "初步诊断的准确率：第 1 个就对、前 3 个里有" }, root);
+    for (const g of [0, 25, 50, 75, 100]) {
+      svg("line", { x1: xs(g), x2: xs(g), y1: T, y2: H - 26, class: g ? "grid" : "axis" }, s);
+      text(s, xs(g), H - 8, g + "%", { "text-anchor": "middle", class: "t-muted" });
+    }
+    R.forEach((r, i) => {
+      const y = T + i * RH + 8, model = r.name.startsWith("诊断模型（只听");
+      text(s, 0, y + 15, r.name, { class: model ? "t-strong" : "" });
+      [["top1", "--s-top1", 0], ["top3", "--s-top3", bh + 3]].forEach(([k, v, dy]) => {
+        if (r[k] == null) return;
+        svg("path", { d: barPath(xs(0), y + dy, xs(r[k]), bh), style: `fill:var(${v})` }, s);
+        text(s, xs(r[k]) + 6, y + dy + bh - 1, f1(r[k]), { class: k === "top3" && model ? "t-strong" : "" });
+      });
+      const hit = svg("rect", { x: 0, y: y - 4, width: W, height: RH - 4, fill: "transparent" }, s);
+      hover(hit, `<b>${esc(r.name)}</b><br>${sw("--s-top1")}第 1 个就对：<b>${f1(r.top1)}%</b>${r.top1_ci ? `（95% CI ${r.top1_ci.map(f1).join("–")}）` : ""}`
+        + (r.top3 != null ? `<br>${sw("--s-top3")}前 3 个里有：<b>${f1(r.top3)}%</b>` : ""));
+    });
+    (root.querySelector(".csub") || root).insertAdjacentHTML("afterend", `<div class="legend"><span><i style="background:var(--s-top1)"></i>第 1 个就对</span><span><i style="background:var(--s-top3)"></i>前 3 个里有</span></div>`);
+    root.insertAdjacentHTML("beforeend", `<details class="data"><summary>查看数据表</summary>${table(
+      ["诊断依据（测试集 811 段）", "第 1 个就对", "95% CI", "前 3 个里有"],
+      R.map((r) => [esc(r.name), f1(r.top1), r.top1_ci ? r.top1_ci.map(f1).join("–") : "—", r.top3 != null ? f1(r.top3) : "—"]), 2)}</details>`);
+  }
+
   // ---------------------------------------------------------------- 5. tables built from data
+  function dxclinical(root) {
+    const C = D.diagnosis.clinical;
+    root.insertAdjacentHTML("beforeend", table(["设定（测试集）", "主要诊断与医生一致", "95% CI", "医生的诊断在列出的诊断里", "平均列出"],
+      C.map((r) => [esc(r.name), f1(r.primary), r.primary_ci.map(f1).join("–"), f1(r.listed), r.n_listed.toFixed(1)]),
+      C.findIndex((r) => r.name.startsWith("知识库每答一题重算，问 5"))));
+  }
   function arms811(root) {
     const A = D.arms811;
     root.innerHTML = table(["提问方式（全部 811 段测试问诊）", "问 3 个", "问 5 个", "95% CI", "问 10 个", "孩子确有的症状（问 5 个）"],
@@ -248,7 +281,7 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") lb.classList.remove("on"); });
   }
 
-  const run = { dumbbell, curves, record, understand, arms811, stopping, replay };
+  const run = { dumbbell, curves, record, understand, dxbars, dxclinical, arms811, stopping, replay };
   document.querySelectorAll("[data-chart]").forEach((e) => run[e.dataset.chart](e));
   facts();
   lightbox();

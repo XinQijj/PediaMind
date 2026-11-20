@@ -327,6 +327,130 @@ window.PM_DATA = {
   "kb_hit@1": 33.7,
   "kb_hit@5": 68.2
  },
+ "diagnosis": {
+  "rows": [
+   {
+    "name": "总是猜最常见的病",
+    "top1": 13.4,
+    "top3": null
+   },
+   {
+    "name": "相似问诊知识库投票（只听开头）",
+    "top1": 45.6,
+    "top3": 79.2
+   },
+   {
+    "name": "诊断模型（只听开头）",
+    "top1": 53.5,
+    "top3": 87.7,
+    "top1_ci": [
+     50.1,
+     56.7
+    ]
+   },
+   {
+    "name": "诊断模型（问 5 个后）",
+    "top1": 53.9,
+    "top3": 89.0,
+    "top1_ci": [
+     50.6,
+     57.2
+    ]
+   },
+   {
+    "name": "诊断模型（问 10 个后）",
+    "top1": 54.6,
+    "top3": 89.8,
+    "top1_ci": [
+     51.4,
+     58.0
+    ]
+   },
+   {
+    "name": "诊断模型（全部可问的都知道，上限）",
+    "top1": 56.8,
+    "top3": 91.0,
+    "top1_ci": [
+     53.5,
+     60.0
+    ]
+   }
+  ],
+  "doctor_agreement": 83.5,
+  "local_model_website": 42.0,
+  "local_model_ci": [
+   35.0,
+   49.0
+  ],
+  "classifier_s200_q5": {
+   "n": 200,
+   "top1": 48.5,
+   "top1_ci": [
+    41.5,
+    55.0
+   ],
+   "top3": 90.5
+  },
+  "local_full_dialogue": 63.4,
+  "kimi_full_dialogue_s200": 49.5,
+  "clinical": [
+   {
+    "name": "只听家长开头的话",
+    "primary": 58.1,
+    "primary_ci": [
+     54.6,
+     61.3
+    ],
+    "listed": 89.1,
+    "n_listed": 2.67,
+    "n": 811
+   },
+   {
+    "name": "知识库每答一题重算，问 5 个后",
+    "primary": 58.7,
+    "primary_ci": [
+     55.1,
+     61.8
+    ],
+    "listed": 89.4,
+    "n_listed": 2.59,
+    "n": 811
+   },
+   {
+    "name": "知识库每答一题重算，问 10 个后",
+    "primary": 58.3,
+    "primary_ci": [
+     54.7,
+     61.5
+    ],
+    "listed": 89.1,
+    "n_listed": 2.6,
+    "n": 811
+   },
+   {
+    "name": "完美问诊（全部可问的症状，上限）",
+    "primary": 60.7,
+    "primary_ci": [
+     57.3,
+     63.7
+    ],
+    "listed": 90.3,
+    "n_listed": 2.67,
+    "n": 811
+   },
+   {
+    "name": "网站做法问 5 个后（200 段）",
+    "primary": 56.0,
+    "primary_ci": [
+     49.0,
+     62.5
+    ],
+    "listed": 89.5,
+    "n_listed": 2.56,
+    "n": 200
+   }
+  ]
+ },
  "stopping": {
   "0.10": {
    "recall": 70.2,
